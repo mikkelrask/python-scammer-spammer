@@ -14,12 +14,12 @@ names = json.loads(open('names.json').read())
 for name in names:
 	name_extra = ''.join(random.choice(string.digits))
 
-	username = name.lower() + name_extra + '@live.dk'
-	password = ''.join(random.choice(chars) for i in range(8))
+	username = name.lower() + name_extra
+	password = ''.join(random.choice(chars) for i in range(10))
 
 	requests.post(url, allow_redirects=False, data={
 		'userid': username,
 		'password': password
 	})
-
-	print 'sending username %s and password %s' % (username, password)
+	print("sendign username " + username + " and password " + password)
+	#print 'sending username %s and password %s' % (username, password)

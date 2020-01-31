@@ -8,7 +8,7 @@ chars = string.ascii_letters + string.digits + '!@#$%^&*()'
 random.seed = (os.urandom(1024))
 
 #url = 'https://innoique.icu/prv/3f5c944e6d930973cedf945fa1c3bdad647/loginerror.php'
-url = 'https://mediation-de.com/prv/85d2d30f9f7d5ed92ec8e0feb11ca622385/loading.php'
+url = 'https://mediation-de.com/prv/12f6009a33bccd92c33a9369248ff983866/loadlogin.php'
 
 names = json.loads(open('names.json').read())
 
@@ -21,6 +21,6 @@ for name in names:
 	requests.post(url, allow_redirects=False, data={
 		'userid': username,
 		'password': password,
-		'submit': 'suck dick'
+		'submit': 'submit'
 	})
 	print("sending username " + username + " and password " + password)

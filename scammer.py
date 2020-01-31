@@ -22,4 +22,3 @@ for name in names:
 		'password': password
 	})
 	print("sending username " + username + " and password " + password)
-	#print 'sending username %s and password %s' % (username, password)

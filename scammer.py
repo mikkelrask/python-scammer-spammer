@@ -3,6 +3,10 @@ import os
 import random
 import string
 import json
+import socket
+import whois
+
+from querycontacts import ContactFinder
 
 passwordrange = 12
 
@@ -23,11 +27,11 @@ def menu():
 	print('3: Spam Social security numbers and passwords')
 	print('4: Find abuse contacts for domain and host')
 	print('5. Report website')
+	print('6. Set password lenght (Default 12 - resets each session')
 	print('q: Quit')
 	print('')
 
 	userformat = input('Please pick: ')
-	
 	if(userformat == 'q'):
 		exit()
 	elif(userformat == "1"):
@@ -37,31 +41,27 @@ def menu():
 	elif(userformat == "3"):
 		socialsecuritynumber()
 	elif(userformat == "4"):
-		whois()
+		abusecontact()
+	print('')
 
 
-def whois():
+def abusecontact():
+	qf = ContactFinder()
+	
 	domain = input(bcolors.BOLD + "What domain do you wish to look up: " + bcolors.ENDC)
-	whois = "whois " + domain + " | grep -i @"
-	dig = "dig +short " + domain
-
+	domainwhois = "whois " + domain + " | grep @"
 	print("Searching for abuse contacts for " + bcolors.UNDERLINE + domain + bcolors.ENDC)
 	print("")
-	print(os.popen(dig))
-	domainresult = os.popen(whois)
-	ipresult = os.popen(dig)
-	domainoutput = domainresult.readlines()
-	iplist = ipresult.readlines()
-	for i in iplist:
-		
-	ipwhois = "whois " + ip + " | grep -i @"
-	if(domainoutput == None):
-		print("Domain name abuse contact: ")
-		print(domainoutput)
-	print("")
-	print("IP (Server) abuse contact")
-	print(ipwhois)
-	print("")
+	domainresult = os.popen(domainwhois)	
+	ip = socket.gethostbyname(domain)
+	IPabuse = qf.find(ip)
+	print('Server hosting: (' + ip + ')')
+	print(bcolors.OKGREEN + ". ".join(repr(e) for e in IPabuse) + bcolors.ENDC)
+	print('')
+	print('Domain host/registrar: ' + domain)
+	print(bcolors.OKGREEN + domainresult.readline() + bcolors.ENDC) 
+	
+	
 	input("Press Enter to continue...")
 	menu()
 
@@ -217,4 +217,4 @@ elif(userformat == "2"):
 elif(userformat == "3"):
 	socialsecuritynumber()
 elif(userformat == "4"):
-	whois()
+	abusecontact()

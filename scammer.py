@@ -42,22 +42,25 @@ def menu():
 
 def whois():
 	domain = input(bcolors.BOLD + "What domain do you wish to look up: " + bcolors.ENDC)
-	domainsearch = "whois " + domain + " | awk abuse{1}"
-	ipsearch = "dig +short " + domain
+	whois = "whois " + domain + " | grep -i @"
+	dig = "dig +short " + domain
 
 	print("Searching for abuse contacts for " + bcolors.UNDERLINE + domain + bcolors.ENDC)
 	print("")
-	print(os.popen(ipsearch))
-	domainresult = os.popen(domainsearch)
-	ipresult = os.popen(ipsearch)
+	print(os.popen(dig))
+	domainresult = os.popen(whois)
+	ipresult = os.popen(dig)
 	domainoutput = domainresult.readlines()
-	ipoutput = ipresult.readlines()
-	if(domainresult	 != 0):
+	iplist = ipresult.readlines()
+	for i in iplist:
+		
+	ipwhois = "whois " + ip + " | grep -i @"
+	if(domainoutput == None):
 		print("Domain name abuse contact: ")
 		print(domainoutput)
 	print("")
 	print("IP (Server) abuse contact")
-	print(ipoutput)
+	print(ipwhois)
 	print("")
 	input("Press Enter to continue...")
 	menu()

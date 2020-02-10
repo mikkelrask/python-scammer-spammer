@@ -5,6 +5,7 @@ import string
 import json
 import socket
 import whois
+import time
 
 from querycontacts import ContactFinder
 
@@ -51,7 +52,7 @@ def finishbanner():
 	waitforinput()
 	
 def menu():
-	print(bcolors.BOLD + 'What do want to do?' + bcolors.ENDC)
+	print(bcolors.HEADER + 'What do want to do?' + bcolors.ENDC)
 	print('[ 1 ] ' + bcolors.OKGREEN + 'Spam Usernames and password' + bcolors.ENDC)
 	print('[ 2 ] ' + bcolors.OKGREEN + 'Spam Email-address and passwords' + bcolors.ENDC)
 	print('[ 3 ] ' + bcolors.OKGREEN + 'Spam Social security numbers and passwords' + bcolors.ENDC)
@@ -61,6 +62,8 @@ def menu():
 
 	userformat = input('Please pick: ')
 	if(userformat == 'q'):
+		exit()	
+	if(userformat == 'Q'):
 		exit()
 	elif(userformat == 'x'):
 		exit()
@@ -74,7 +77,11 @@ def menu():
 		socialsecuritynumber()
 	elif(userformat == "4"):
 		abusecontact()
-	print('')
+	else:
+		print('')
+		print(bcolors.FAIL + '[ ' + userformat + ' ] - Invalid choice' + bcolors.ENDC)
+		time.sleep(1)
+		menu()
 
 def abusecontact():
 	qf = ContactFinder()
@@ -87,11 +94,17 @@ def abusecontact():
 	print('[ ' + bcolors.OKGREEN + '+' + bcolors.ENDC + ' ] Pinging ' + domain + ' ...  ... ' + bcolors.OKGREEN + ip + bcolors.ENDC)
 	IPabuse = qf.find(ip)
 	print('')
-	print('Abuse contact for the hosting server:')
-	print(bcolors.FAIL + ". ".join(repr(e) for e in IPabuse) + bcolors.ENDC)
-	print('')
-	print('Abuse contact for the domain host/registrar for: ' + domain)
-	print(bcolors.FAIL + domainresult.readline() + bcolors.ENDC) 
+	if (IPabuse != ''):
+		print('[ ' + bcolors.OKGREEN + '+' + bcolors.ENDC + ' ] Abuse contact for the hosting server:')
+		print(bcolors.OKGREEN + ". ".join(repr(e) for e in IPabuse) + bcolors.ENDC)
+	else:
+		print(bcolors.FAIL + '[ ! ] No abuse contacts found for ' + ip + bcolors.ENDC)
+
+	if (domainresult.readline() != ''):
+		print('[ ' + bcolors.OKGREEN + '+' + bcolors.ENDC + ' ] Abuse contact for the domain host/registrar for: ' + domain)
+		print(domainresult.readline() + bcolors.ENDC) 
+	else:
+		print('[ ' + bcolors.FAIL + '!' + bcolors.ENDC + ' ] No abuse contacts found for domain.')
 	
 	waitforinput()
 	menu()
